@@ -1,0 +1,4 @@
+5
+ABCED
+7
+ACBECED

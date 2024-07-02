@@ -1,0 +1,4 @@
+6
+ABCDEF
+6
+FEDCBA

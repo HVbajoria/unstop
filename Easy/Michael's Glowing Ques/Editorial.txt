@@ -1,0 +1,37 @@
+Intuition
+The problem revolves around understanding binary representations of numbers and how to count specific bits within those representations. The key insight is recognizing that every number in binary form consists of a series of 0s and 1s, and our task is to count the number of 1s (glowing bits) from 1 up to a given number, N.
+
+Approach
+1) Understanding Binary Representation: Every positive integer can be represented as a series of bits (0s and 1s) in binary. For example, the decimal number 5 is represented as 101 in binary.
+2) Counting '1's in Binary: The core of our solution involves iterating through each number from 1 to N, converting it to its binary representation, and then counting the number of 1s in that representation.
+3) Iterative Solution: We use a loop to iterate through each number up to N. For each number, we convert it to binary using Python's built-in bin() function, which returns a string representation of the number in binary, prefixed with '0b'. We then count the occurrences of '1' in this string.
+4) Summing Up the Counts: As we count the '1's for each number, we accumulate this count in a variable, which gives us the total number of glowing bits from 1 to N.
+
+Code
+def count_glowing_bits(n):
+    glowing_bit_count = 0
+
+    # Iterate through each number from 1 to n
+    for number in range(1, n + 1):
+        # Convert the number to binary and count the '1's
+        glowing_bit_count += bin(number).count('1')
+
+    # Return the total number of glowing bits
+    return glowing_bit_count
+
+def main():
+    # Taking user input for Michael's dream number
+    N = int(input())
+    
+    # Display the total number of glowing bits from 1 to N
+    print(count_glowing_bits(N))
+
+if __name__ == "__main__":
+    main()
+
+Proper Explanation
+Function 
+    count_glowing_bits(n): This function is responsible for the core logic. It initializes a counter glowing_bit_count to 0. It then iterates from 1 to N, inclusive. For each number in this range, it converts the number to its binary representation using bin(number), which returns a string like '0b101' for the number 5. The .count('1') method is then used to count how many '1's are present in this string, ignoring the '0b' prefix. This count is added to glowing_bit_count.
+    Main Function: The main function prompts the user for input (Michael's dream number, N), calls count_glowing_bits(N) to compute the total number of glowing bits, and prints the result.
+
+This solution efficiently counts the glowing bits for each number from 1 to N by leveraging Python's built-in functions for binary conversion and string manipulation. It's a straightforward approach that combines basic programming constructs (loops and string methods) to solve a problem grounded in binary number theory.

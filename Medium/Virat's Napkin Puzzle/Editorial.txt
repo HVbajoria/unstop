@@ -1,0 +1,40 @@
+Editorial: Finding the Longest Continuous Sequence of Matching Letters
+
+Intuition:
+The problem Virat faces is akin to finding a common subsequence in two strings, but with a twist: the subsequence must be continuous. This challenge requires a methodical approach to compare each letter in the two lists of napkins and identify the longest stretch where they match.
+
+Approach:
+The solution leverages recursion to explore all possible sequences of matching letters between the two lists. The key idea is to compare the lists letter by letter from the end, moving towards the beginning, and keep track of the longest matching sequence found so far.
+1) Base Case: If either of the lists is empty (i.e., its length is 0), the longest continuous sequence of matching letters is also 0.
+2) Matching Letters: If the last letters of both lists match, there's a potential sequence. We then recursively check the remaining parts of the lists, excluding the matching letters, and increase the count of the matching sequence by 1.
+3) aximizing the Sequence: To ensure we find the longest sequence, we compare the current count with the result of two other recursive calls:
+    One that checks the current list1 against list2 minus its last letter (to skip a non-matching scenario in list2).
+    Another that checks list1 minus its last letter against the current list2 (to skip a non-matching scenario in list1).
+4) Result: The maximum count obtained from all recursive calls gives us the length of the longest continuous sequence of matching letters.
+
+Code:
+def longest_matching_sequence(len_list1, len_list2, count):
+    if (len_list1 == 0 or len_list2 == 0):
+        return count
+
+    if (list1[len_list1 - 1] == list2[len_list2 - 1]):
+        count = longest_matching_sequence(len_list1 - 1, len_list2 - 1, count + 1)
+
+    count = max(count, max(longest_matching_sequence(len_list1, len_list2 - 1, 0),
+                           longest_matching_sequence(len_list1 - 1, len_list2, 0)))
+    return count
+
+N = int(input().strip())
+list1 = input().strip()
+M = int(input().strip())
+list2 = input().strip()
+
+print(longest_matching_sequence(N, M, 0))
+
+Proper Explanation:
+1) Recursion Depth: The function longest_matching_sequence dives deep into each possible sequence, exploring all paths where letters might match, and backtracks with the count of the longest sequence found.
+2) Counting Matches: The count parameter is crucial. It increments only when a matching pair is found, and this incremented value is carried forward in the recursive call to potentially build upon the sequence.
+3) Choosing the Longest Path: The use of max ensures that among all paths explored, only the longest sequence's length is considered, effectively ignoring shorter sequences.
+4) Efficiency: While the approach is straightforward and elegant, it's worth noting that this recursive solution might not be the most efficient for very large lists due to its exhaustive nature. For larger datasets, dynamic programming could offer a more optimized solution.
+
+This solution, through its recursive exploration, elegantly solves Virat's problem, demonstrating the power of recursion in breaking down complex problems into manageable sub-problems.

@@ -1,0 +1,95 @@
+Tags: Backtracking, Combinatorics, Dynamic Programming
+
+Topics: Recursion, Dynamic Programming, Combinations and Permutations
+
+Suggested Companies: Google, Amazon, Facebook, Microsoft, Adobe
+
+Difficulty: Medium
+
+Problem Statement:
+Aastha has won various tickets at Timezoone by playing games, each with a different value. 
+She's eyeing a prize that requires a certain amount of tickets to claim. With an endless supply of each ticket type, she needs to figure out every possible way to combine her tickets to reach the exact amount needed for the prize. 
+Help Aastha find all combinations to get her dream prize.
+
+Input Format:
+The first line contains an integer N, the total number of different ticket types Aastha has.
+The second line contains N space-separated integers, each representing the value of a ticket type.
+The third line contains an integer T, the total ticket value needed to claim the prize.
+
+Output Format:
+Print all unique combinations of ticket values that sum up to T. Each combination should be printed on a new line, with ticket values in non-descending order, separated by spaces. If there are no combinations possible, print "No combination found".
+
+Constraints:
+1 <= N <= 10^4, where N is the number of different ticket types.
+1 <= ticket value <= 10^4
+1 <= T <= 10^7, where T is the total ticket value needed for the prize.
+
+A ticket type can be used multiple times in a combination.
+Combinations should not be repeated and should be printed in a lexicographical (ascending) order.
+
+Sample Test Case 1:
+Input:
+2
+5 10
+20
+
+Output:
+5 5 5 5
+5 5 10
+10 10
+
+Explanation:
+The first line 5 5 5 5 represents four tickets of value 5 each, summing up to 20.
+The second line 5 5 10 represents two tickets of value 5 and one ticket of value 10, summing up to 20.
+The third line 10 10 represents two tickets of value 10 each, summing up to 20.
+These combinations show all the ways Aastha can use her tickets to reach the total value of 20 and claim her prize.
+
+Sample Test Case 2:
+Input:
+4
+2 4 6 8
+12
+
+Output:
+2 2 2 2 2 2
+2 2 2 2 4
+2 2 2 6
+2 2 4 4
+2 4 6
+4 4 4
+6 6
+
+Explanation:
+The first line 2 2 2 2 2 2 represents six tickets of value 2 each, summing up to 12.
+The second line 2 2 2 2 4 represents four tickets of value 2 and one ticket of value 4, summing up to 12.
+The third line 2 2 2 6 represents three tickets of value 2 and one ticket of value 6, summing up to 12.
+The fourth line 2 2 4 4 represents two tickets of value 2 and two tickets of value 4, summing up to 12.
+The fifth line 2 4 6 represents one ticket of value 2, one ticket of value 4, and one ticket of value 6, summing up to 12.
+The sixth line 4 4 4 represents three tickets of value 4 each, summing up to 12.
+The seventh line 6 6 represents two tickets of value 6 each, summing up to 12.
+These combinations show all the ways Aastha can use her tickets to reach the total value of 12 and claim her prize.
+
+Solution Code:
+# Function to find all combinations of ticket values that sum up to the target value
+def find_ticket_combinations(ticket_values, num_ticket_types, target_value):
+    # Initialize a list to store the count of combinations for each value up to target_value
+    combinations_count = [0] * (target_value + 1)
+    # There is always 1 way to reach 0 value (by not choosing any tickets)
+    combinations_count[0] = 1
+
+    # Iterate over each ticket value
+    for i in range(num_ticket_types):
+        # Update the combinations count for values that can be reached by the current ticket value
+        for j in range(ticket_values[i], target_value + 1):
+            combinations_count[j] += combinations_count[j - ticket_values[i]]
+
+    return combinations_count[target_value]
+
+# Taking input from the user
+num_ticket_types = int(input().strip())
+ticket_values = list(map(int, input().strip().split()))
+target_value = int(input().strip())
+
+# Finding and printing the number of combinations
+combinations = find_ticket_combinations(ticket_values, num_ticket_types, target_value)
+print(combinations)

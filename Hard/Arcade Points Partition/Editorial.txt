@@ -1,0 +1,44 @@
+Intuition
+The problem at hand involves dividing a set of points into two groups such that the difference between the total points of each group is minimized. This scenario is reminiscent of the classic partition problem, which is a well-known problem in computer science, particularly in the realm of dynamic programming. The intuition behind solving this problem lies in understanding that we aim to make the two groups as equal as possible, essentially trying to find two subsets whose sums are as close to half of the total sum as possible.
+
+Approach
+The solution employs dynamic programming (DP) to tackle the problem efficiently. Here's a step-by-step breakdown of the approach:
+1) Calculate the Total Sum: First, we calculate the total sum of all points. This helps in determining our target sum, which is half of the total sum. The closer we can get to this target with one group, the smaller the difference will be between the two groups.
+2) Dynamic Programming Setup: We initialize two DP arrays, can_achieve_sum and current_achievable, to keep track of which sums can be achieved as we iterate through the points. can_achieve_sum is used to store sums that can be achieved up to the current point, and current_achievable is used as a temporary storage to update can_achieve_sum in each iteration.
+3) Iterating Through Points: For each point, we update our DP arrays to reflect the new sums that can be achieved by including this point. This involves checking for each possible sum up to our target if adding the current point to this sum would still be less than the target and if the sum without the current point was achievable.
+4) Finding the Closest Sum: After considering all points, we look for the largest sum in can_achieve_sum that is closest to our target. This sum represents the total points of one group that is closest to half of the total sum.
+5) Calculating the Minimum Difference: The minimum difference is then calculated as the total points minus twice the sum found. This represents the difference between the two groups.
+
+Code
+def findMinimumDifference(points):
+    total_points = sum(points)
+    target = total_points // 2 + 1
+
+    can_achieve_sum = [False] * target
+    current_achievable = [False] * target
+    can_achieve_sum[0] = True
+
+    for point in points:
+        for current_sum in range(target):
+            if current_sum + point < target and can_achieve_sum[current_sum]:
+                current_achievable[current_sum + point] = True
+
+        for current_sum in range(target):
+            if current_achievable[current_sum]:
+                can_achieve_sum[current_sum] = True
+                current_achievable[current_sum] = False
+
+    for i in range(target - 1, -1, -1):
+        if can_achieve_sum[i]:
+            return total_points - 2 * i
+
+    return 0
+
+if __name__ == '__main__':
+    N = int(input().strip())
+    points = list(map(int, input().strip().split()))
+    print(findMinimumDifference(points))
+
+Proper Explanation
+The solution leverages dynamic programming to efficiently explore the space of possible sums that can be achieved with the given points. By initializing the DP arrays and iteratively updating them as we consider each point, we ensure that we only keep track of achievable sums. This method avoids the need for exhaustive search, significantly reducing the computational complexity.
+The key insight is that by finding the sum closest to half of the total sum, we ensure the two groups of points are as evenly distributed as possible, minimizing the difference between their totals. This approach is both elegant and efficient, providing a clear path to solving the problem.

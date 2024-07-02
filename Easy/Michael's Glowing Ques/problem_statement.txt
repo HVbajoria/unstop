@@ -1,0 +1,72 @@
+Tags: Bit Manipulation, Binary Representation, Counting
+
+Topics: Bitwise Operations, Binary Number System
+
+Difficulty Level: Easy
+
+Suggested Companies: Google, Amazon, Microsoft, Facebook, Apple
+
+Problem Statement:
+Michael dreams of a magical number, N. His quest is to discover the total number of glowing bits in the mystical binary lands of numbers from 1 to his dream number, N.
+In the mystical binary lands, a "glowing bit" is a bit that shines brightly, representing the digit '1' in the binary representation of a number.
+
+Input Format:
+A single integer N, representing Michael's dream number.
+
+Output Format:
+A single integer, representing the total number of glowing bits (i.e., '1's in the binary representation) from 1 to N.
+
+Constraints:
+1 <= N <= 10^7
+
+Sample Testcase 1:
+Input:
+3
+
+Output:
+4
+
+Explanation:
+The binary representation of numbers from 1 to 3 are:
+1 -> 1
+2 -> 10
+3 -> 11
+Counting the glowing bits ('1's), we get 4 (one '1' from 1, one '1' from 2, and two '1's from 3).
+
+Sample Testcase 2:
+Input:
+5
+
+Output:
+7
+
+Explanation:
+The binary representation of numbers from 1 to 5 are:
+1 -> 1
+2 -> 10
+3 -> 11
+4 -> 100
+5 -> 101
+Counting the glowing bits ('1's), we get 7 (one '1' from 1, one '1' from 2, two '1's from 3, one '1' from 4, and two '1's from 5).
+
+Solution Code:
+def count_glowing_bits(n):
+    glowing_bit_count = 0
+
+    # Iterate through each number from 1 to n
+    for number in range(1, n + 1):
+        # Convert the number to binary and count the '1's
+        glowing_bit_count += bin(number).count('1')
+
+    # Return the total number of glowing bits
+    return glowing_bit_count
+
+def main():
+    # Taking user input for Michael's dream number
+    N = int(input())
+    
+    # Display the total number of glowing bits from 1 to N
+    print(count_glowing_bits(N))
+
+if __name__ == "__main__":
+    main()

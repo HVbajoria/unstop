@@ -1,0 +1,51 @@
+Editorial: Charlie's List Transformation
+
+Intuition
+The problem at hand involves transforming one string (Charlie's list) into another (Selena's list) using the least number of operations: adding, removing, or changing a page. This problem is a classic example of the Edit Distance problem, which measures the minimum number of operations required to transform one string into another. The intuition behind solving this problem lies in breaking it down into smaller, manageable subproblems using dynamic programming.
+
+Approach
+The solution employs dynamic programming (DP) to efficiently compute the minimum number of steps required. The key idea is to use a 2D DP table where dp[i][j] represents the minimum number of operations required to transform the first i characters of Charlie's list into the first j characters of Selena's list.
+1) Base Cases:
+    If Charlie's list is empty (i == 0), the number of steps required is equal to the length of Selena's list (j), as we need to add all her pages.
+    Similarly, if Selena's list is empty (j == 0), the number of steps required is equal to the length of Charlie's list (i), as we need to remove all his pages.
+
+2) Recursive Step:
+    If the last characters of the current substrings of Charlie's and Selena's lists match, no operation is needed for the last character, and we move to the previous characters of both lists.
+    If the last characters do not match, we consider all possible operations (add, remove, change) and choose the one that requires the minimum number of steps. Specifically:
+        Add: Add the current character of Selena's list to Charlie's, and move to the next character in Selena's list.
+        Remove: Remove the current character from Charlie's list, and move to the next character in Charlie's list.
+        Change: Change the current character in Charlie's list to match Selena's, and move to the next character in both lists.
+3) Memoization: To avoid recomputing the results for the same subproblems, we store the results in the DP table.
+
+Code:
+def min_steps_to_match(charlie, selena):
+    dp = [[-1] * (len(selena) + 1) for _ in range(len(charlie) + 1)]
+    
+    def calculate_min_steps(charlie, selena, len_charlie, len_selena):
+        if len_charlie == 0:
+            return len_selena
+        if len_selena == 0:
+            return len_charlie
+        
+        if dp[len_charlie][len_selena] != -1:
+            return dp[len_charlie][len_selena]
+        
+        if charlie[len_charlie - 1] == selena[len_selena - 1]:
+            dp[len_charlie][len_selena] = calculate_min_steps(charlie, selena, len_charlie - 1, len_selena - 1)
+        else:
+            dp[len_charlie][len_selena] = 1 + min(
+                calculate_min_steps(charlie, selena, len_charlie, len_selena - 1),  # Insert
+                calculate_min_steps(charlie, selena, len_charlie - 1, len_selena),  # Remove
+                calculate_min_steps(charlie, selena, len_charlie - 1, len_selena - 1)  # Change
+            )
+        
+        return dp[len_charlie][len_selena]
+    
+    return calculate_min_steps(list(charlie), list(selena), len(charlie), len(selena))
+
+Proper Explanation
+1) The min_steps_to_match function initializes a DP table with -1, indicating that no subproblem has been solved yet.
+2) The calculate_min_steps function is a recursive function that computes the minimum number of steps required to match the lists, using the approach described above.
+3) The function checks if the current subproblem has already been solved (memoization check). If not, it proceeds to solve it either by moving to the next characters if the current ones match or by performing one of the three operations (add, remove, change) and choosing the one with the minimum steps.
+4) Finally, the function returns the value of dp[len(charlie)][len(selena)], which represents the minimum number of steps required to transform Charlie's list into Selena's.
+This solution efficiently computes the minimum number of steps with a time complexity of O(N*M), where N and M are the lengths of Charlie's and Selena's lists, respectively.

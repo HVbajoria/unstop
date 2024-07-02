@@ -1,0 +1,92 @@
+Tags: Dynamic Programming, String Manipulation
+
+Topics: string
+
+Difficulty Level: Hard
+
+Suggested Companies: Google, Amazon, Facebook, Microsoft
+
+Problem Statement:
+Charlie and Selena have lists of pages, each represented by letters. Charlie wants his list to match Selena's. He can:
+1) Add a Page: Charlie can insert a new page into his list.  For example, if Selena's list has a page represented by the letter 'D' that Charlie's list lacks, he can add 'D' to his list.
+2) Remove a Page: Charlie can remove a page from his list. For instance, if Charlie's list includes a 'B' page that Selena's does not, he can remove 'B' from his list.
+3) Change a Page: Charlie has the option to change one page in his list to another. For example, if Charlie has a 'G' where Selena has an 'H', he can change 'G' to 'H'.
+Find the least number of steps Charlie needs to make his list match Selena's.
+
+Input Format:
+The first line contains an integer (N), the size of Charlie's list.
+The second line contains a string of length (N), representing Charlie's list of pages.
+The third line contains an integer (M), the size of Selena's list.
+The fourth line contains a string of length (M), representing Selena's list of pages.
+
+Output Format:
+A single integer, representing the minimum number of steps required for Charlie's list to match Selena's.
+
+Constraints:
+1 <=> N, M <=10^5
+Each list consists of only uppercase and lowercase English letters (a-z, A-Z).
+
+Sample Testcase 1:
+Input:
+4
+ZXCV
+4
+ASDF
+Output:
+4
+Explanation :
+Charlie's list is "ZXCV" and Selena's list is "ASDF".
+Since none of the pages match, Charlie needs to change every page in his list to match Selena's. This means:
+    Change 'Z' to 'A'.
+    Change 'X' to 'S'.
+    Change 'C' to 'D'.
+    Change 'V' to 'F'.
+Charlie performs 4 steps in total, changing each page in his list to match Selena's.
+
+Sample Testcase 2:
+Input:
+3
+ABC
+3
+ACD
+Output:
+2
+Explanation:
+Charlie's list is "ABC" and Selena's list is "ACD".
+Charlie can remove 'B' from his list and add 'D' to it. So, he performs 2 steps in total:
+    Remove 'B' -> Charlie's list becomes "AC".
+    Add 'D' -> Charlie's list becomes "ACD".
+Therefore, the minimum number of steps required is 2.
+
+Solution Code:
+def min_steps_to_match(charlie, selena):
+    dp = [[-1] * (len(selena) + 1) for _ in range(len(charlie) + 1)]
+    
+    def calculate_min_steps(charlie, selena, len_charlie, len_selena):
+        if len_charlie == 0:
+            return len_selena
+        if len_selena == 0:
+            return len_charlie
+        
+        if dp[len_charlie][len_selena] != -1:
+            return dp[len_charlie][len_selena]
+        
+        if charlie[len_charlie - 1] == selena[len_selena - 1]:
+            dp[len_charlie][len_selena] = calculate_min_steps(charlie, selena, len_charlie - 1, len_selena - 1)
+        else:
+            dp[len_charlie][len_selena] = 1 + min(
+                calculate_min_steps(charlie, selena, len_charlie, len_selena - 1),  # Insert operation
+                calculate_min_steps(charlie, selena, len_charlie - 1, len_selena),  # Remove operation
+                calculate_min_steps(charlie, selena, len_charlie - 1, len_selena - 1)  # Change operation
+            )
+        
+        return dp[len_charlie][len_selena]
+    
+    return calculate_min_steps(list(charlie), list(selena), len(charlie), len(selena))
+
+n = int(input())  # Size of Charlie's list
+charlie_list = input()
+m = int(input())  # Size of Selena's list
+selena_list = input()
+
+print(min_steps_to_match(charlie_list, selena_list))

@@ -1,0 +1,34 @@
+Editorial: Arranging Boxes by Weight
+Intuition
+The problem at hand involves arranging a series of boxes with unique weights in ascending order. The intuitive leap comes from recognizing that each box has a specific position it needs to occupy in the sorted arrangement. The challenge lies in figuring out how to move each box to its correct position with the least number of exchanges.
+
+Approach
+The key to solving this problem efficiently is to leverage the relationship between the current order of boxes and the desired order. Here's a step-by-step breakdown of the approach:
+1) Identify the Target Position for Each Box: First, we need to know where each box is supposed to go. This can be easily determined by sorting the weights of the boxes. However, simply sorting the array won't suffice since we need to track the exchanges, not just achieve a sorted array.
+2) Track Original Positions: To keep track of the exchanges, we create a mapping from each box's weight to its original position. This allows us to know where each weight is starting from and where it needs to go.
+3) Perform Exchanges: Iterate through the array, and for each position, check if the box currently at that position is the box that is supposed to be there (according to the sorted order). If not, swap it with the box that is supposed to be there. This is where the mapping comes in handy, as it allows us to find the current position of the box that needs to be swapped in.
+4) Count Exchanges: Each time a swap is made, increment a counter. This counter will ultimately hold the minimum number of exchanges required to arrange the boxes in ascending order of their weights.
+
+Code:
+def minimumExchanges(weights, num_boxes):
+    exchanges = 0
+    sorted_weights = sorted(weights)
+    weight_to_index = {weight: index for index, weight in enumerate(weights)}
+
+    for i in range(num_boxes):
+        if weights[i] != sorted_weights[i]:
+            exchanges += 1
+            current_weight = weights[i]
+            swap_index = weight_to_index[sorted_weights[i]]
+            weights[i], weights[swap_index] = weights[swap_index], weights[i]
+            weight_to_index[current_weight] = swap_index
+            weight_to_index[sorted_weights[i]] = i
+
+    return exchanges
+
+Proper Explanation
+1) Initialization: We start by sorting the weights to know the target position for each box. We also create a dictionary to map each weight to its current index, facilitating quick lookups during swaps.
+2) Iterating and Swapping: As we iterate through the array, we compare the current weight against the weight that should be in its place (according to the sorted array). If they don't match, it means the current box is not in its correct position. We then find the correct box (using our mapping) and swap them. This swap moves one box to its correct position, but it may displace another, hence the need for potentially multiple swaps.
+3) Counting Exchanges: Each swap represents a necessary exchange to move a box closer to its correct position. By counting swaps, we effectively count the minimum number of exchanges needed.
+This approach ensures that each box is moved directly to its correct position in the most efficient manner possible, thereby minimizing the number of exchanges required to achieve a sorted arrangement of the boxes by weight.
+

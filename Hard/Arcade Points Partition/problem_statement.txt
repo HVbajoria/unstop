@@ -1,0 +1,85 @@
+Tags: Dynamic Programming, Arrays, Greedy
+
+Topics: Dynamic Programming, Greedy Algorithms, Array Partitioning
+
+Suggested Companies: Google, Amazon, Microsoft, Facebook, Bloomberg
+
+Difficulty Level: Hard
+
+Problem Statement:
+Charlie and his sister have a list of points they've earned at the arcade. They want to split these points into two groups so that the difference in their totals is as small as possible. 
+Charlie takes some points for his group, and his sister takes the rest. 
+They're trying to find the fairest way to divide the points.
+
+Input Format:
+The first line contains an integer N, the number of points they have earned.
+The second line contains N space-separated integers, each representing the points earned from each game at the arcade.
+
+Output Format:
+A single integer, the minimum possible difference between the total points of Charlie's group and his sister's group.
+
+Constraints:
+1 <= N <= 10^6
+1 <= points[i] <= 10^5, where points[i] is the points earned from the ith game.
+
+Sample Test Case 1:
+Input:
+4
+1 2 3 4
+Output:
+0
+Explanation: 
+Charlie and his sister can divide the points as follows:
+Charlie takes points 1 and 4 (total = 5).
+His sister takes points 2 and 3 (total = 5). 
+The difference between their totals is 0, which is the minimum possible difference.
+
+Sample Test Case 2:
+Input:
+3
+10 20 15
+Output:
+5
+Explanation: 
+Charlie and his sister can divide the points as follows:
+Charlie takes point 20 (total = 20).
+His sister takes points 10 and 15 (total = 25). 
+The difference between their totals is 5, which is the minimum possible difference they can achieve with the given points.
+
+Solution Code:
+def findMinimumDifference(points):
+    total_points = sum(points)
+    target = total_points // 2 + 1
+
+    # Initialize DP arrays for storing possible sums
+    can_achieve_sum = [False] * target
+    current_achievable = [False] * target
+
+    # Base case: Achieving a sum of 0 is always possible
+    can_achieve_sum[0] = True
+
+    for point in points:
+        for current_sum in range(target):
+            if current_sum + point < target and can_achieve_sum[current_sum]:
+                current_achievable[current_sum + point] = True
+
+        # Update the achievable sums after considering the current point
+        for current_sum in range(target):
+            if current_achievable[current_sum]:
+                can_achieve_sum[current_sum] = True
+            current_achievable[current_sum] = False  # Reset for the next iteration
+
+    # Find the largest sum achievable that is closest to half of the total points
+    for i in range(target - 1, -1, -1):
+        if can_achieve_sum[i]:
+            # The minimum difference is the total points minus twice the sum found
+            return total_points - 2 * i
+
+    return 0
+
+# Taking input according to the specified format
+if __name__ == '__main__':
+    N = int(input().strip())
+    points = list(map(int, input().strip().split()))
+
+    print(findMinimumDifference(points))

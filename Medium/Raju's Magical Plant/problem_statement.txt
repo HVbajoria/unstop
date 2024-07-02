@@ -2,7 +2,7 @@ Tags: Trees, Breadth-First Search (BFS), Depth-First Search (DFS), Binary Tree
 
 Topics: Data Structures, Algorithms, Tree Traversal
 
-Difficulty Level: Easy
+Difficulty Level: Medium
 
 Problem Statement:
 Raju has a magical plant that grows in a unique way, resembling a binary tree, where each branch splits into two smaller branches. 

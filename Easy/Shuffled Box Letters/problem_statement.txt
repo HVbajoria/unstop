@@ -1,0 +1,104 @@
+Tags:
+Strings
+Hash Table
+Counting
+
+Topics:
+String Manipulation
+Data Structures
+Algorithms
+
+Suggested Companies:
+Google
+Amazon
+Facebook
+Microsoft
+Adobe
+
+Difficulty Level: Easy
+
+Problem Statement:
+Alex possesses numerous boxes, each labeled with letters. 
+He ponders whether, post-transport, the letters on these boxes can still assemble into the initial words, even if their sequence might alter. 
+He's eager to find out if every box has been accurately delivered to recreate the original words, thereby making them rearrangements of one another.
+
+Input Format:
+The first line contains a string s1, representing the initial arrangement of letters on the boxes before transportation.
+The second line contains a string s2, representing the arrangement of letters on the boxes after transportation.
+
+Output Format:
+Print True if the letters on the boxes after transportation can be rearranged to form the initial words (s1), otherwise print False.
+
+Constraints:
+1 <= |s1|, |s2| <= 10^5, where (|s1|) and (|s2|) are the lengths of strings s1 and s2 respectively.
+Strings s1 and s2 consist of lowercase English letters only.
+
+Sample Test Case 1:
+Input:
+listen
+silent
+
+Output:
+True
+
+Explanation:
+Both strings listen and silent contain the same letters but in different orders. 
+By rearranging the letters in silent, we can obtain the word listen. 
+Therefore, the output is True, indicating that the letters on the boxes can be rearranged to form the initial word.
+
+Sample Test Case 2:
+Input:
+hello
+world
+
+Output:
+False
+
+Explanation:
+The strings hello and world do not contain the same set of letters. 
+For example, hello contains two 'l's and an 'e', which are not present in world, and world contains a 'd' and an 'r', which are not present in hello. 
+Since it's not possible to rearrange the letters in world to form hello, the output is False.
+
+Solution Code:
+# Python3 implementation of the approach
+# Function that checks if the letters on the boxes can be rearranged to match the initial arrangement
+
+def canRearrange(initial, after_transport):
+
+    # Check if the length of both strings is the same
+    if len(initial) != len(after_transport):
+        return False
+
+    # Create a dictionary to count occurrences of each character
+    letter_count = {}
+
+    # Count characters in the initial arrangement
+    for char in initial:
+        if char in letter_count:
+            letter_count[char] += 1
+        else:
+            letter_count[char] = 1
+
+    # Decrease count for each character found in the arrangement after transportation
+    for char in after_transport:
+        if char in letter_count:
+            letter_count[char] -= 1
+        else:
+            return False
+
+    # Check if all counts are 0, indicating a perfect match
+    for count in letter_count.values():
+        if count != 0:
+            return False
+
+    return True
+
+# Taking input from the user
+input_initial = input()
+input_after_transport = input()
+
+# Function call
+if canRearrange(input_initial, input_after_transport):
+    print("True")
+else:
+    print("False")

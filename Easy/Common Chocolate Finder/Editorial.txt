@@ -1,0 +1,44 @@
+Intuition
+The problem at hand involves finding common elements across three sorted lists. The intuitive approach is to leverage the sorted nature of these lists to efficiently identify common elements. The key insight is that by comparing the current elements of each list, we can incrementally move through the lists to find matches. This is akin to a three-way merge process, where instead of merging, we seek intersections.
+
+Approach
+1) Initialization: Start with the first element (index 0) of each list. These will be our pointers (i, j, k) for Shreyashee's, Twinny's, and Harsh's chocolate lists, respectively.
+2) Iterative Comparison:
+    Compare the current elements pointed by i, j, and k.
+    If all three elements are the same, it means we've found a common chocolate type. We add this chocolate type to our list of common chocolates and move all three pointers forward.
+    If they are not the same, we move the pointer forward in the list that has the smallest current element. This is because, given the lists are sorted, the smallest element has no chance of matching with the current elements of the other two lists.
+3) Termination: The process continues until at least one of the lists is exhausted. At this point, we've either found some common chocolates or none.
+4) Output: If we've found common chocolates, we output them as a space-separated string. If no common chocolates are found, we output -1.
+
+Code
+The provided solution code implements the approach described above:
+def find_common_chocolates(shreyashee_chocolates, twinny_chocolates, harsh_chocolates, n1, n2, n3):
+    i, j, k = 0, 0, 0
+    common_chocolates = []
+
+    while i < n1 and j < n2 and k < n3:
+        if shreyashee_chocolates[i] == twinny_chocolates[j] == harsh_chocolates[k]:
+            common_chocolates.append(shreyashee_chocolates[i])
+            i += 1
+            j += 1
+            k += 1
+        elif shreyashee_chocolates[i] < twinny_chocolates[j]:
+            i += 1
+        elif twinny_chocolates[j] < harsh_chocolates[k]:
+            j += 1
+        else:
+            k += 1
+
+    if common_chocolates:
+        print(" ".join(common_chocolates))
+    else:
+        print("-1")
+
+Proper Explanation
+1) Initialization: The pointers i, j, and k start at 0, pointing to the first element of each friend's chocolate list.
+2) Iterative Comparison: The loop continues as long as none of the lists are exhausted. Within the loop:
+    If a common element is found (i.e., the elements at i, j, and k are the same), it's added to common_chocolates, and all pointers are incremented.
+    If not, the pointer of the list with the smallest current element is incremented. This step ensures we're always moving forward in the list(s) with the least possibility of finding a match in the current state, aiming for the next potential match.
+3) Termination and Output: Once the loop ends (because one or more lists are exhausted), we check if any common chocolates were found. If so, they're printed; otherwise, -1 is printed to indicate no common chocolates.
+
+This solution is efficient, taking advantage of the sorted nature of the lists to minimize unnecessary comparisons, thereby optimizing the search for common elements.

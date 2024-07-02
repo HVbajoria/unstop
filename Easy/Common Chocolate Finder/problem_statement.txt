@@ -1,0 +1,109 @@
+Tags: Arrays, Sorting, Strings, Two Pointers
+
+Topics: Arrays, Sorting algorithms, String manipulation, Two-pointer technique
+
+Suggested Companies: Google, Amazon, Facebook, Microsoft, Adobe
+
+Difficulty Level: Easy
+
+Problem Statement:
+Shreyashee and her two friends, Twinny and Harsh, each have a collection of chocolates of various types, all sorted by their sweetness. 
+They're curious to find out which types of chocolates they all have in common so they can enjoy them together. 
+Help them identify these common chocolates.
+
+Input Format:
+The first line contains an integer N, the number of chocolate types Shreyashee has.
+The second line contains N space-separated strings, the types of chocolates Shreyashee has.
+The third line contains an integer M, the number of chocolate types Twinny has.
+The fourth line contains M space-separated strings, the types of chocolates Twinny has.
+The fifth line contains an integer Z, the number of chocolate types Harsh has.
+The sixth line contains Z space-separated strings, the types of chocolates Harsh has.
+
+Output Format:
+Output a single line containing the space-separated types of chocolates that are common among Shreyashee, Twinny, and Harsh, sorted alphabetically. 
+If there are no common chocolates, print -1.
+
+Constraints:
+1 <= N, M, Z <= 10^4
+Chocolate types are represented by lowercase English letters and have a length of at most 10 characters.
+
+Sample Input 1:
+Input:
+3
+dark milk white
+2
+dark almond
+3
+milk dark hazelnut
+
+Output:
+dark
+
+Explanation:
+Shreyashee has 3 types of chocolates: dark, milk, and white.
+Twinny has 2 types of chocolates: dark and almond.
+Harsh has 3 types of chocolates: milk, dark, and hazelnut.
+The common chocolate type among all three friends is dark. Therefore, the output will be dark.
+
+Sample Input 2:
+Input:
+2
+white almond
+3
+dark milk hazelnut
+4
+caramel biscuit berry dark
+
+Output 2:
+-1
+
+Explanation:
+Shreyashee has 2 types of chocolates: white and almond.
+Twinny has 3 types of chocolates: dark, milk, and hazelnut.
+Harsh has 4 types of chocolates: caramel, biscuit, berry, and dark.
+There are no chocolate types common among all three friends. Shreyashee does not have dark, which Twinny and Harsh have in common. Therefore, the output will be -1 to indicate no common chocolates.
+
+Solution Code:
+# Python function to find common chocolate types among three friends
+def find_common_chocolates(shreyashee_chocolates, twinny_chocolates, harsh_chocolates, n1, n2, n3):
+
+    # Initialize starting indexes for the chocolate lists of Shreyashee, Twinny, and Harsh
+    i, j, k = 0, 0, 0
+    common_chocolates = []
+
+    # Iterate through the chocolate lists while all lists have elements
+    while i < n1 and j < n2 and k < n3:
+
+        # If the same chocolate type is found in all three lists, add it to the result and move ahead in all lists
+        if shreyashee_chocolates[i] == twinny_chocolates[j] == harsh_chocolates[k]:
+            common_chocolates.append(shreyashee_chocolates[i])
+            i += 1
+            j += 1
+            k += 1
+
+        # Move ahead in the list which has the smallest chocolate type
+        elif shreyashee_chocolates[i] < twinny_chocolates[j]:
+            i += 1
+        elif twinny_chocolates[j] < harsh_chocolates[k]:
+            j += 1
+        else:
+            k += 1
+
+    # Print the common chocolate types if any, else print -1
+    if common_chocolates:
+        print(" ".join(common_chocolates))
+    else:
+        print("-1")
+
+
+# Taking user input
+N = int(input())
+shreyashee_chocolates = sorted(input().split())
+M = int(input())
+twinny_chocolates = sorted(input().split())
+Z = int(input())
+harsh_chocolates = sorted(input().split())
+
+# Calling the function with the user input
+find_common_chocolates(shreyashee_chocolates, twinny_chocolates, harsh_chocolates, N, M, Z)
+

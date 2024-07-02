@@ -1,0 +1,51 @@
+Editorial: Checking if Letters on Boxes Can Be Rearranged
+
+Intuition
+The core idea behind solving this problem is to understand that the order of letters does not matter as long as the frequency of each letter remains the same before and after transportation. This means we need a way to count and compare the occurrences of each letter in both strings.
+
+Approach
+1) Length Check: First, we check if the lengths of both strings are the same. If not, it's impossible for them to be rearrangements of each other, and we return False.
+2) Counting Letters: We use a dictionary to count the occurrences of each letter in the initial arrangement. This dictionary maps each letter to its frequency.
+3) Comparing Frequencies: We then iterate through the second string (after transportation) and decrease the count of each letter in our dictionary. If a letter is not found in the dictionary or if we end up with a negative count, it means the arrangements cannot be the same, and we return False.
+4) Final Check: After processing both strings, we check if all counts in our dictionary are zero. If so, it means each letter's frequency is the same in both strings, and we return True. Otherwise, we return False.
+
+Code:
+def canRearrange(initial, after_transport):
+    if len(initial) != len(after_transport):
+        return False
+
+    letter_count = {}
+    for char in initial:
+        if char in letter_count:
+            letter_count[char] += 1
+        else:
+            letter_count[char] = 1
+
+    for char in after_transport:
+        if char in letter_count:
+            letter_count[char] -= 1
+        else:
+            return False
+
+    for count in letter_count.values():
+        if count != 0:
+            return False
+
+    return True
+
+input_initial = input()
+input_after_transport = input()
+
+if canRearrange(input_initial, input_after_transport):
+    print("True")
+else:
+    print("False")
+
+Time Complexity
+The time complexity of this solution is O(n), where n is the length of the strings. This is because we iterate through each string exactly once to count and compare the letter frequencies.
+
+Space Complexity
+The space complexity is O(1). Although we use a dictionary to store letter counts, the size of the dictionary is bounded by the number of distinct letters in the alphabet, which is constant (26 for lowercase English letters). Therefore, the space complexity does not scale with the size of the input strings.
+
+Explanation
+The solution leverages the fact that if two strings are rearrangements (anagrams) of each other, they must have the same frequency of each character. By counting the occurrences of each character in both strings and ensuring these counts match, we can determine if one string is a rearrangement of the other. This approach is efficient and straightforward, avoiding the need for sorting or other more complex operations.

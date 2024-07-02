@@ -1,0 +1,113 @@
+Tags: Trees, Breadth-First Search (BFS), Depth-First Search (DFS), Binary Tree
+
+Topics: Data Structures, Algorithms, Tree Traversal
+
+Difficulty Level: Easy
+
+Problem Statement:
+Raju has a magical plant that grows in a unique way, resembling a binary tree, where each branch splits into two smaller branches. 
+This plant, like a binary tree, starts from a single root and expands outwards. 
+The challenge is to measure how tall Raju's plant has grown. The elevation is determined by counting the number of branches from the root to the furthest leaf. 
+Remember, an untouched pot (an empty tree) stands at elevation 0, while a newly sprouted seed (a tree with just the root) is at elevation 1.
+
+Input Format:
+The first line contains a single integer, N, the number of nodes in Raju's plant.
+The next N-1 lines each contain two integers, u and v, representing a branch between nodes u and v in the plant.
+
+Output Format:
+Print a single integer, the elevation of Raju's plant from the root to the furthest leaf.
+
+Constraints:
+1 ≤ N ≤ 10^5
+1 ≤ u, v ≤ N
+It's guaranteed that the given edges form a tree.
+
+Sample Input 1:
+3
+1 2
+1 3
+Output:
+2
+Explanation:
+TIn this scenario, Raju's plant consists of 3 nodes. The configuration of the plant is such that the root node (1) has two branches leading to nodes 2 and 3. Visually, the plant looks like this:
+    1
+  / \
+ 2   3
+The elevation is calculated as the number of branches from the root to the furthest leaf. In this case, both nodes 2 and 3 are at the same distance from the root, with an elevation of 2. Therefore, the output is 2.
+
+Test Case 2:
+Input:
+5
+1 2
+2 3
+3 4
+4 5
+Output:
+5
+Explanation:
+Here, Raju's plant has 5 nodes, and it grows linearly, forming a straight line from the root node 1 to node 5. The structure of the plant can be visualized as follows:
+1 - 2 - 3 - 4 - 5
+The elevation, in this case, is the length of the path from the root node 1 to the furthest leaf node 5, which includes 5 branches. 
+Thus, the plant's elevation is 5, making the output 5. This represents the maximum elevation in a plant with 5 nodes, where each node is directly connected to the next in a single line.
+
+Solution Code:
+# Python3 program to find the elevation of Raju's plant
+class PlantNode:
+    # Constructor to create a new node
+    def __init__(self, data):
+        self.key = data
+        self.left = None
+        self.right = None
+
+# Function to find elevation of the plant
+def plantElevation(root):
+    # Base Case
+    if root is None:
+        return 0
+
+    # Create an empty queue for level order traversal
+    q = []
+
+    # Enqueue Root and initialize elevation
+    q.append(root)
+    elevation = 0
+
+    # Loop while queue is not empty
+    while q:
+        # nodeCount (queue size) indicates number of nodes at current level
+        nodeCount = len(q)
+
+        # Dequeue all nodes of current level and Enqueue all nodes of next level
+        while nodeCount > 0:
+            node = q.pop(0)
+            if node.left is not None:
+                q.append(node.left)
+            if node.right is not None:
+                q.append(node.right)
+            nodeCount -= 1
+        elevation += 1
+
+    return elevation
+
+# Function to build the plant from input
+def buildPlant(edges):
+    nodes = {}
+    for edge in edges:
+        u, v = edge
+        if u not in nodes:
+            nodes[u] = PlantNode(u)
+        if v not in nodes:
+            nodes[v] = PlantNode(v)
+        if nodes[u].left is None:
+            nodes[u].left = nodes[v]
+        else:
+            nodes[u].right = nodes[v]
+    return nodes[1]  # Returning the root node
+
+# Taking input
+N = int(input().strip())
+edges = [list(map(int, input().strip().split())) for _ in range(N-1)]
+
+# Building the plant and calculating elevation
+root = buildPlant(edges)
+print(plantElevation(root))

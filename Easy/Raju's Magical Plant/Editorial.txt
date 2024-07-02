@@ -1,0 +1,58 @@
+Intuition
+The problem statement presents a scenario where we need to measure the elevation of a plant that grows in a manner similar to a binary tree. The key insight is to understand that the elevation of the plant is essentially the depth of the deepest leaf node in this tree structure. This depth represents the longest path from the root node to a leaf node.
+
+Approach
+The solution to this problem involves two main steps:
+1) Building the Plant Structure: First, we need to construct the binary tree representation of Raju's plant based on the given input. Each node in the plant is represented by a unique integer, and the connections between these nodes (branches) are given as input.
+2) Calculating the Elevation: Once we have the plant structure, we calculate the elevation by finding the maximum depth of the tree. This can be efficiently done using a level order traversal (Breadth-First Search) where we traverse the tree level by level, counting the number of levels until we reach the deepest leaf node.
+
+Code
+The solution is implemented in Python as follows:
+class PlantNode:
+    def __init__(self, data):
+        self.key = data
+        self.left = None
+        self.right = None
+
+def plantElevation(root):
+    if root is None:
+        return 0
+    q = []
+    q.append(root)
+    elevation = 0
+    while q:
+        nodeCount = len(q)
+        while nodeCount > 0:
+            node = q.pop(0)
+            if node.left is not None:
+                q.append(node.left)
+            if node.right is not None:
+                q.append(node.right)
+            nodeCount -= 1
+        elevation += 1
+    return elevation
+
+def buildPlant(edges):
+    nodes = {}
+    for edge in edges:
+        u, v = edge
+        if u not in nodes:
+            nodes[u] = PlantNode(u)
+        if v not in nodes:
+            nodes[v] = PlantNode(v)
+        if nodes[u].left is None:
+            nodes[u].left = nodes[v]
+        else:
+            nodes[u].right = nodes[v]
+    return nodes[1]
+
+N = int(input().strip())
+edges = [list(map(int, input().strip().split())) for _ in range(N-1)]
+root = buildPlant(edges)
+print(plantElevation(root))
+
+Proper Explanation
+1) Building the Plant Structure: The buildPlant function takes the list of edges as input and constructs the binary tree. For each edge (u, v), it checks if u and v are already present in the nodes dictionary. If not, it creates a new PlantNode for each and adds it to the dictionary. Then, it connects v as a left or right child of u, depending on whether the left child is already occupied.
+2) Calculating the Elevation: The plantElevation function performs a level order traversal on the tree. It uses a queue to keep track of nodes at the current level. For each level, it dequeues all nodes, enqueues their children, and increments the elevation count. This process continues until the queue is empty, indicating that we have reached the deepest leaf node. The final elevation count gives us the maximum depth of the tree.
+
+This approach efficiently calculates the elevation of Raju's plant by leveraging the properties of a binary tree and the breadth-first search algorithm to measure the depth of the deepest leaf node.

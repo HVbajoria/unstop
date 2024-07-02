@@ -1,0 +1,82 @@
+Tags:
+Dynamic Programming
+Recursion
+Memoization
+
+Topics:
+Combinatorics
+Climbing Stairs Problem
+Fibonacci Sequence
+
+Suggested Companies:
+Google
+Amazon
+Facebook
+Microsoft
+Adobe
+
+Problem Statement:
+Esita stands at the bottom of a magical ladder that reaches up to her dream destination. 
+The ladder has a unique property - with each step she takes, she can choose to climb 1, 2, or 3 rungs. 
+Esita wonders in how many different ways she can climb the ladder to reach her final destination.
+
+Input Format:
+A single integer N, representing the total number of rungs in the ladder that Esita wishes to climb.
+
+Output Format:
+A single integer representing the number of different ways Esita can climb to the top of the ladder.
+
+Constraints:
+1 <= N <= 10^6
+
+Sample Input 1:
+4
+Sample Output 1:
+7
+Explanation 1:
+Esita has a ladder with 4 rungs. She can climb it in the following 7 different ways:
+Climb 1 rung at a time (1, 1, 1, 1)
+Climb 1 rung, then 2 rungs, then 1 rung (1, 2, 1)
+Climb 1 rung, then 1 rung, then 2 rungs (1, 1, 2)
+Climb 2 rungs, then 1 rung, then 1 rung (2, 1, 1)
+Climb 2 rungs, then 2 rungs (2, 2)
+Climb 1 rung, then 3 rungs (1, 3)
+Climb 3 rungs, then 1 rung (3, 1)
+
+Sample Input 2:
+3
+Sample Output 2:
+4
+Explanation 2:
+Esita has a ladder with 3 rungs. She can climb it in the following 4 different ways:
+Climb 1 rung at a time (1, 1, 1)
+Climb 1 rung, then 2 rungs (1, 2)
+Climb 2 rungs, then 1 rung (2, 1)
+Climb all 3 rungs at once (3)
+These examples illustrate how the number of ways Esita can climb the ladder increases with the number of rungs, considering she can climb 1, 2, or 3 rungs at a time.
+
+Solution Code:
+# A Python program to count the number of ways Esita can climb the ladder
+
+def countWaysToClimb(n):
+    # Initialize an array to store the number of ways to climb i rungs
+    ways = [0] * 3
+
+    # Base cases
+    ways[0] = 1  # Only 1 way to climb 0 or 1 rung
+    ways[1] = 1  # Only 1 way to climb 1 rung
+    ways[2] = 2  # Two ways to climb 2 rungs: (1,1) or (2)
+
+    # Calculate the number of ways to climb each number of rungs from 3 to n
+    for i in range(3, n + 1):
+        # The number of ways to climb i rungs is the sum of the ways to climb (i-1), (i-2), and (i-3) rungs
+        ways[i % 3] = ways[(i - 1) % 3] + ways[(i - 2) % 3] + ways[(i - 3) % 3]
+
+    # Return the number of ways to climb n rungs
+    return ways[n % 3]
+
+# Take the number of rungs from user input
+n = int(input())
+
+# Print the number of ways Esita can climb to the top of the ladder
+print(countWaysToClimb(n))

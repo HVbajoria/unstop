@@ -1,0 +1,27 @@
+Editorial: Michael's Mountain Quest
+
+Approach
+The problem statement requires us to find all the mountains that are taller than all the mountains to their east. This problem can be efficiently solved by traversing the array of mountain heights from right to left. The key insight is that as we move from east to west, we can keep track of the tallest mountain we have seen so far. Any mountain that is taller than this "tallest so far" mountain is a leader (i.e., taller than all mountains to its east), and we update our "tallest so far" to this new mountain height.
+
+Code
+def identify_tallest_mountains():
+    n = int(input())  # Number of mountains
+    mountains = list(map(int, input().split()))  # Heights of the mountains
+    
+    tallest_from_right = mountains[n-1]  # Initialize with the last mountain
+    print(tallest_from_right, end=' ')  # The last mountain is always considered tall
+    
+    # Traverse the list from right to left, starting from the second last element
+    for i in range(n-2, -1, -1):
+        if tallest_from_right < mountains[i]:
+            print(mountains[i], end=' ')  # Print the current mountain if it is taller
+            tallest_from_right = mountains[i]  # Update the tallest mountain seen so far
+
+Proper Explanation
+Initialization: We start by taking the number of mountains (n) and their heights as input. The variable tallest_from_right is initialized with the height of the last mountain because, by definition, the last mountain is always considered tall as there are no mountains to its east.
+Traversing the Array: The core logic involves traversing the array from right to left, starting from the second last element (since the last element is always included). For each mountain, we compare its height with tallest_from_right, which keeps track of the tallest mountain seen so far in our traversal.
+Identifying Leaders: If the current mountain's height is greater than tallest_from_right, it means this mountain is taller than all the mountains to its east (since tallest_from_right represents the tallest mountain encountered in our right-to-left traversal up to that point). Therefore, we print the current mountain's height and update tallest_from_right to reflect the new tallest mountain.
+Output: The output is printed in reverse order (from east to west) because we traverse the array from right to left. Each leader mountain's height is printed as soon as it is identified, separated by spaces.
+
+This approach ensures that we only need to traverse the array once, making it an efficient solution with a time complexity of O(n), where n is the number of mountains.
+

@@ -1,0 +1,75 @@
+Tags: Arrays, Iteration, Reverse Traversal
+
+Topics: Arrays
+
+Difficulty Level: Easy
+
+Question:
+Michael is on a mountain trip and spots various mountains of different heights. 
+He wonders which mountains are taller than all the mountains to their east. 
+He knows the last mountain he sees is always considered tall. 
+Can you help Michael identify these tallest mountains?
+
+Input Format:
+A single line containing N, the number of mountains Michael sees.
+The next line contains N space-separated integers representing the heights of the mountains from west to east.
+
+Output Format:
+A single line containing the heights of the mountains that are taller than all the mountains to their east, including the last mountain, separated by space.
+
+Constraints:
+1 <= N <= 10^6
+Height of each mountain is a positive integer less than or equal to (10^9).
+
+Sample Test Case 1:
+Input:
+5
+3 4 5 2 1
+Output:
+5 2 1
+Explanation:
+Michael sees 5 mountains with heights 3, 4, 5, 2, and 1 from west to east.
+The first mountain (height 3) is not taller than the mountains to its east.
+The second mountain (height 4) is also not taller than the mountain to its east (height 5).
+The third mountain (height 5) is taller than all the mountains to its east, so it is included in the output.
+The fourth mountain (height 2) is taller than the mountain to its east (height 1), so it is included.
+The fifth mountain (height 1) is the last mountain, so it is always considered tall and included in the output.
+Therefore, the mountains that are taller than all the mountains to their east are 5, 2, and 1.
+
+Sample Test Case 2:
+Input:
+4
+2 3 4 3
+Output:
+4 3
+Explanation:
+Michael sees 4 mountains with heights 2, 3, 4, and 3 from west to east.
+The first and second mountains (heights 2 and 3) are not taller than the mountain to their east (height 4).
+The third mountain (height 4) is taller than the mountain to its east, so it is included in the output.
+The fourth mountain (height 3) is the last mountain, so it is always considered tall and included in the output.
+Therefore, the mountains that are taller than all the mountains to their east are 4 and 3.
+
+Solution Code:
+# Python function to identify and print the tallest mountains
+def identify_tallest_mountains():
+    # Taking input for the number of mountains
+    n = int(input())
+    # Taking input for the heights of the mountains
+    mountains = list(map(int, input().split()))
+    
+    # Initialize the tallest mountain from the right as the last mountain
+    tallest_from_right = mountains[n-1]
+    # Print the last mountain as it is always considered tall
+    print(tallest_from_right, end=' ')
+    
+    # Iterate through the mountains from right to left
+    for i in range(n-2, -1, -1):
+        # If the current mountain is taller than the tallest mountain to its right
+        if tallest_from_right < mountains[i]:
+            # Print the current mountain as it is taller
+            print(mountains[i], end=' ')
+            # Update the tallest mountain to the current mountain
+            tallest_from_right = mountains[i]
+
+# Call the function to execute
+identify_tallest_mountains()

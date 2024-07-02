@@ -1,0 +1,32 @@
+Approach
+The challenge is to efficiently find the row with the maximum number of lit candles (1s) in a board where each row represents a sequence of candles, sorted such that all unlit candles (0s) precede the lit ones. This problem can be approached by leveraging the sorted nature of the rows, allowing for an optimized search strategy that minimizes the number of elements inspected.
+1) Start at the Top-Right: Begin the search from the top-right corner of the board. This position is strategic because it immediately tells us if the current row has any lit candles without inspecting every element in the row.
+2) Iterative Search:
+    If a lit candle (1) is found, it indicates that all subsequent elements to the left are also lit (due to the sorted nature of the rows). This row becomes a candidate for the brightest row. Move left to check if this row has more lit candles.
+    If an unlit candle (0) is encountered, it means we've reached the boundary between lit and unlit candles for that row, and no further lit candles exist to the right. Move down to the next row to continue the search.
+3) Optimization: This method ensures that each step either moves one position to the left or one row down, significantly reducing the search space compared to a brute-force approach that would require inspecting every element.
+4) Termination: The search ends when we either run out of columns (having checked all potential lit candles in the current candidate row) or rows (having inspected all rows). The last row marked as a candidate contains the maximum number of lit candles.
+
+Code
+def findBrightestRow(board):
+    numRows = len(board)
+    numCols = len(board[0])
+    brightestRow = -1  # Initialize to -1 indicating no row found yet
+    currentRow = 0
+    currentCol = numCols - 1
+
+    while currentRow < numRows and currentCol >= 0:
+        if board[currentRow][currentCol] == 0:
+            currentRow += 1  # Move down
+        else:
+            brightestRow = currentRow  # Update candidate row
+            currentCol -= 1  # Move left
+
+    return brightestRow + 1  # Adjust for 1-indexed output
+
+Explanation
+Initialization: The algorithm starts at the top-right corner, leveraging the sorted property of the rows to minimize the number of elements inspected.
+Iterative Search: By moving left upon finding a lit candle and down upon finding an unlit candle, the algorithm efficiently narrows down the brightest row.
+Optimization: This approach significantly reduces the search space, avoiding the need to inspect every element in the board.
+Result: The algorithm returns the 1-indexed position of the row with the maximum number of lit candles, efficiently identifying the brightest row with minimal computation.
+This solution is elegant in its simplicity and efficiency, demonstrating the power of leveraging the inherent properties of the data (in this case, the sorted rows) to optimize search strategies.

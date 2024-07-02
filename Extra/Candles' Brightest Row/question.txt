@@ -1,0 +1,84 @@
+Topics: Arrays, Binary Search, Greedy Algorithms
+
+Tags: Counting, Sorting, Binary Search
+
+Difficulty Level: Medium
+
+Problem statement:
+Michael has a board with rows of candles, some lit (denoted by 1) and some not (denoted by 0), arranged neatly. Each row is sorted: unlit candles first, then lit ones. 
+Curious about the glow, he wants to find which row shines the brightest by having the most lit candles.
+
+Input Format:
+The first line contains an integer, n, the number of rows on the board.
+Each of the next n lines contains a sequence of integers (0s and 1s), representing the candles in a row. Each sequence is sorted.
+
+Output Format:
+Print a single integer, the index of the row with the highest number of lit candles. If there are multiple rows with the same highest number of lit candles, print the smallest index among them.
+
+Constraints:
+- 1 <= n <= 10^5
+- Each row will contain between 1 and 10^5 elements.
+- Each element in the row is either 0 (unlit candle) or 1 (lit candle).
+- The sum of the number of candles across all rows does not exceed 10^5.
+
+Sample Input 1:
+3
+0 1 1
+1 1 1
+0 0 1
+
+Sample Output 1:
+2
+
+Explanation 1:
+- The first row has 2 lit candles.
+- The second row has all 3 candles lit, making it the brightest.
+- The third row has only 1 lit candle.
+Therefore, the second row (index 2, 1-indexed) has the highest number of lit candles.
+
+Sample Input 2:
+4
+1
+0 0 1
+0 1
+1 1
+
+Sample Output 2:
+1
+
+Explanation 2:
+- The first and fourth rows both have 2 lit candles, which is the highest in this case.
+- The second row has 1 lit candle, and the third row also has 1 lit candle.
+Since the first and fourth rows tie for the highest number of lit candles, we print the smallest index among them, which is 1 (1-indexed).
+
+Solutin Code:
+# Python3 program to find the row with the highest number of lit candles
+
+def findBrightestRow(board):
+    numRows = len(board)
+    numCols = len(board[0])
+    brightestRow = -1  # Initialize with -1 to indicate no row found yet
+    currentRow = 0
+    currentCol = numCols - 1
+
+    # Iterate until we are within the bounds of the board
+    while currentRow < numRows and currentCol >= 0:
+        # If the current candle is unlit, move to the next row
+        if board[currentRow][currentCol] == 0:
+            currentRow += 1
+        # If the current candle is lit, update brightestRow and move left
+        else:
+            brightestRow = currentRow
+            currentCol -= 1
+
+    return brightestRow + 1  # Adjusting for 1-indexed output
+
+# Taking input
+n = int(input().strip())  # Number of rows
+board = []
+for _ in range(n):
+    row = list(map(int, input().strip().split()))
+    board.append(row)
+
+# Output the index of the row with the highest number of lit candles
+print(findBrightestRow(board))
